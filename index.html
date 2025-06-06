@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <title>Video & Audio Autoplay Example</title>
+</head>
+<body>
+
+  <h2>Video autoplay (dengan mute supaya langsung jalan)</h2>
+  <video width="640" height="360" controls autoplay muted>
+    <source src="video.mp4" type="video/mp4" />
+    Browser kamu tidak support video tag.
+  </video>
+
+  <h2>Audio autoplay (butuh klik tombol dulu supaya suaranya keluar)</h2>
+  <audio id="myAudio" controls>
+    <source src="audio.mp3" type="audio/mpeg" />
+    Browser kamu tidak support audio tag.
+  </audio>
+
+  <br/>
+  <button id="playAudioBtn">Mainkan Audio</button>
+
+  <script>
+    const audio = document.getElementById('myAudio');
+    const btn = document.getElementById('playAudioBtn');
+
+    btn.addEventListener('click', () => {
+      audio.play();
+      btn.disabled = true; // tombol dinonaktifkan setelah dipakai
+      btn.textContent = "Audio Sedang Diputar";
+    });
+  </script>
+
+</body>
+</html>
+# Panduan Mengompres Video untuk Undangan Pernikahan
+
+Untuk mengoptimalkan performa undangan pernikahan, video perlu dikompresi agar loading lebih cepat. Berikut adalah panduan untuk mengompres video:
+
+## Menggunakan FFmpeg (Metode Terbaik)
+
+1. **Install FFmpeg** (jika belum terinstall):
+   - Windows: Download dari [ffmpeg.org](https://ffmpeg.org/download.html) atau gunakan Chocolatey: `choco install ffmpeg`
+   - Mac: Gunakan Homebrew: `brew install ffmpeg`
+   - Linux: `sudo apt install ffmpeg` (Ubuntu/Debian) atau `sudo yum install ffmpeg` (CentOS/RHEL)
+
+2. **Kompres video** dengan perintah berikut:
+   \`\`\`bash
+   ffmpeg -i prewedding.mp4 -vcodec libx264 -crf 28 -preset medium -vf "scale=1280:-1" -acodec aac -ab 128k prewedding-compressed.mp4
+   \`\`\`
+
+   Parameter yang digunakan:
+   - `-crf 28`: Nilai antara 18-28 (semakin tinggi = ukuran lebih kecil, kualitas lebih rendah)
+   - `-preset medium`: Keseimbangan antara kecepatan kompresi dan kualitas
+   - `-vf "scale=1280:-1"`: Resize video ke lebar 1280px (tinggi menyesuaikan)
+   - `-ab 128k`: Bitrate audio 128kbps
+
+3. **Simpan video hasil kompresi** di folder `public/videos/prewedding-compressed.mp4`
+
+## Menggunakan Layanan Online
+
+Jika tidak ingin menggunakan FFmpeg, Anda bisa menggunakan layanan online:
+
+1. [Clideo Video Compressor](https://clideo.com/compress-video)
+2. [FreeConvert](https://www.freeconvert.com/video-compressor)
+3. [Online-Convert](https://www.online-convert.com/)
+
+## Tips Optimasi Video
+
+1. **Durasi**: Batasi durasi video menjadi 15-30 detik
+2. **Resolusi**: 720p (1280x720) sudah cukup untuk web
+3. **Bitrate**: 1000-1500 kbps untuk video web
+4. **Format**: MP4 dengan codec H.264 adalah standar web
+5. **Poster Image**: Gunakan poster image untuk ditampilkan sebelum video dimuat
+
+## Implementasi di Kode
+
+Komponen `VideoOptimizer` sudah diimplementasikan dengan fitur:
+
+1. Preload metadata saja (bukan seluruh video)
+2. Poster image yang dimuat terlebih dahulu
+3. Lazy loading video
+4. Kontrol mute/unmute
+
+Dengan optimasi ini, undangan pernikahan akan dimuat jauh lebih cepat dan memberikan pengalaman yang lebih baik bagi tamu undangan.
